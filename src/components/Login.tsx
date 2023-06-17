@@ -22,9 +22,6 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Perform API integration here (e.g., using fetch or axios)
-    // Replace <API_ENDPOINT> with your actual API endpoint
-
     try {
       const response = await fetch(
         "https://x8ki-letl-twmt.n7.xano.io/api:XooRuQbs/auth/login",
