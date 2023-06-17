@@ -48,44 +48,60 @@ const Login = () => {
   };
 
   return (
-    <div className="mx-auto flex flex-col w-[60%]">
-      <h1 className="text-2xl font-bold">Login</h1>
-      <br />
-      <form onSubmit={handleSubmit} className="mt-8 ">
-        <div className="mb-4">
-          <label htmlFor="email" className="block mb-2 text-sm font-medium  ">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            className="input input-bordered input-secondary w-full max-w-xs"
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
+    <div className="hero min-h-screen bg-base-200">
+      <div className="hero-content flex-col lg:flex-row-reverse">
+        <div className="text-center lg:text-left">
+          <h1 className="text-5xl font-bold">Login now!</h1>
+          <p className="py-6">
+            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
+            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
+            a id nisi.
+          </p>
         </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block mb-2 text-sm font-medium">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="input input-bordered input-secondary w-full max-w-xs"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
+        <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+          <div className="card-body">
+            <form onSubmit={handleSubmit} className="">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Email</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Email"
+                  className="input input-bordered"
+                  value={email}
+                  onChange={handleEmailChange}
+                  required
+                />
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Password</span>
+                </label>
+                <input
+                  type="password"
+                  placeholder="password"
+                  className="input input-bordered"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  required
+                />
+                <label className="label">
+                  <a href="#" className="label-text-alt link link-hover">
+                    Forgot password?
+                  </a>
+                </label>
+              </div>
+              <div className="form-control mt-6">
+                <button className="btn btn-primary">Login</button>
+                {loginMessage && (
+                  <p className="mt-4 text-red-500">{loginMessage}</p>
+                )}
+              </div>
+            </form>
+          </div>
         </div>
-        <button
-          type="submit"
-          className="btn btn-secondary mt-4 w-full  max-w-xs"
-        >
-          Login
-        </button>
-        {loginMessage && <p className="mt-4 text-red-500">{loginMessage}</p>}
-      </form>
+      </div>
     </div>
   );
 };
