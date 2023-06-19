@@ -38,7 +38,6 @@ const Login = () => {
         setLoginMessage("Login successful!");
         auth.login(email);
         navigate("/form");
-        // Redirect to the next page or perform any necessary actions
       } else {
         setLoginMessage("Login failed. Please check your credentials.");
       }
@@ -48,11 +47,11 @@ const Login = () => {
   };
 
   return (
-    <div className="hero min-h-screen bg-base-200">
+    <div className="hero min-h-[50%] w-[60%] bg-base-200 p-10">
       <div className="hero-content flex-col lg:flex-row-reverse">
-        <div className="text-center lg:text-left">
+        <div className="text-center lg:text-left px-6">
           <h1 className="text-5xl font-bold">Login now!</h1>
-          <p className="py-6">
+          <p className="py-6 ">
             Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
             excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
             a id nisi.
