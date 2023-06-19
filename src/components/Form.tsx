@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const MultiStepForm = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -59,7 +61,9 @@ const MultiStepForm = () => {
 
     if (step === 5) {
       setIsFormSubmitted(true);
-      return;
+      alert("YAYYYY FORM SUBMITTED !!");
+
+      navigate("/");
     }
     setStep((prevStep) => prevStep + 1);
   };
@@ -381,16 +385,33 @@ const MultiStepForm = () => {
                     multiple
                     onChange={(e) => {
                       const selectedFiles = e.target.files;
-                      if (selectedFiles) {
-                        const filesArray = Array.from(selectedFiles).slice(
-                          0,
-                          5
+                      if (selectedFiles && selectedFiles.length > 5) {
+                        e.target.value = ""; // Clear the selected files
+                        setMultiFiles([]);
+                        toast.error("Please select a maximum of 5 files.");
+                      } else {
+                        setMultiFiles(
+                          selectedFiles ? Array.from(selectedFiles) : []
                         );
-                        setMultiFiles(filesArray);
                       }
                     }}
                     required
                   />
+
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                  />
+                  {/* Same as */}
+                  <ToastContainer />
                 </div>
                 <div className="mb-4">
                   <label
@@ -399,14 +420,7 @@ const MultiStepForm = () => {
                   >
                     Geolocation Status
                   </label>
-                  {/* <input
-                    type="text"
-                    id="geolocationStatus"
-                    className="w-full p-2 border rounded-md"
-                    value={geolocationStatus}
-                    onChange={(e) => setGeolocationStatus(e.target.value)}
-                    required
-                  /> */}
+
                   <p>{geolocationStatus}</p>
                   {locationAddress && (
                     <p className="text-sm text-gray-500 mt-2">
@@ -422,7 +436,7 @@ const MultiStepForm = () => {
                 <h2 className="text-lg font-bold mb-4">Step 5: Status</h2>
                 <p className="text-center">
                   {isFormSubmitted
-                    ? "Form submitted successfully!"
+                    ? "Form submitted successfully! 🎉"
                     : "Form not submitted yet."}
                 </p>
               </>
