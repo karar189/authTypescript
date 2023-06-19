@@ -4,7 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { AuthProvider, useAuth } from "./utils/auth.js";
+import { AuthProvider } from "./utils/auth.js";
 import { RequireAuth } from "./utils/RequireAuth.js";
 import Login from "./components/Login";
 import Form from "./components/Form";
@@ -17,11 +17,7 @@ const App = () => {
         <Router>
           <Routes>
             <Route path="/" element={<Login />} />
-            {/* {login ? (
-              <Route path="/form" element={<Form />} />
-            ) : (
-              <Route path="/" element={<Login />} />
-            )} */}
+
             <Route
               path="/form"
               element={
