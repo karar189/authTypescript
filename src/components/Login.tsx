@@ -47,7 +47,7 @@ const Login = () => {
   };
 
   return (
-    <div className="hero min-h-[50%] w-[60%] bg-base-200 p-10">
+    <div className="hero min-h-[50%] w-[60%] bg-base-300 bg-opacity-70 rounded-2xl p-10">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left px-6">
           <h1 className="text-5xl font-bold">Login now!</h1>
@@ -67,7 +67,7 @@ const Login = () => {
                 <input
                   type="text"
                   placeholder="Email"
-                  className="input input-bordered"
+                  className="input input-bordered "
                   value={email}
                   onChange={handleEmailChange}
                   required

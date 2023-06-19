@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const MultiStepForm = () => {
   const navigate = useNavigate();
@@ -75,72 +78,57 @@ const MultiStepForm = () => {
   const [geolocationStatus, setGeolocationStatus] = useState("");
   const [locationAddress, setLocationAddress] = useState("");
 
-  // const getLocationAddress = (
-  //   latitude: number | google.maps.LatLng | google.maps.LatLngLiteral,
-  //   longitude: number | boolean | null | undefined
-  // ) => {
-  //   const geocoder = new window.google.maps.Geocoder();
-  //   const latLng = new window.google.maps.LatLng(latitude, longitude);
-
-  //   geocoder.geocode({ location: latLng }, (results, status) => {
-  //     if (status === window.google.maps.GeocoderStatus.OK) {
-  //       if (results) {
-  //         setLocationAddress(results[0].formatted_address);
-  //       }
-  //     }
-  //   });
-  // };
-
-  // Function to handle geolocation success
-  const handleGeolocationSuccess = async (position: {
-    coords: { latitude: any; longitude: any };
-  }) => {
-    const { latitude, longitude } = position.coords;
-    setGeolocationStatus("Geolocation successful.");
-
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${
-          import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-        }`
-      );
-      const data = await response.json();
-
-      if (data.results && data.results.length > 0) {
-        const address = data.results[0].formatted_address;
-        setGeolocationStatus(address);
-      } else {
-        setGeolocationStatus("Address not found.");
-      }
-    } catch (error) {
-      setGeolocationStatus("Error retrieving address.");
-      console.error(error);
-    }
-  };
-
-  // Function to handle geolocation error
-  const handleGeolocationError = (error: { message: string }) => {
-    setGeolocationStatus("Geolocation error: " + error.message);
-  };
-
-  const handleMultipleFile = (e: React.ChangeEvent<HTMLInputElement>) => {};
-
   useEffect(() => {
-    // Check if the browser supports Geolocation
-    if (navigator.geolocation) {
+    // Function to handle geolocation success
+    const handleGeolocationSuccess = async (position: {
+      coords: { latitude: any; longitude: any };
+    }) => {
+      const { latitude, longitude } = position.coords;
+      console.log(latitude, longitude);
+      setGeolocationStatus("Geolocation successful.");
+
+      try {
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${
+            import.meta.env.MAP_API_KEY
+          }`
+        );
+        const data = await response.json();
+        console.log(data);
+
+        if (data.results && data.results.length > 0) {
+          const address = data.results[0].formatted_address;
+          setLocationAddress(address);
+        } else {
+          setLocationAddress("not found");
+        }
+      } catch (error) {
+        setLocationAddress("Error retrieving address.");
+        console.error(error);
+      }
+    };
+
+    // Function to handle geolocation error
+    const handleGeolocationError = (error: { message: string }) => {
+      setGeolocationStatus("Geolocation error: " + error.message);
+    };
+
+    // Check for geolocation support
+    if ("geolocation" in navigator) {
+      // Request geolocation access
       navigator.geolocation.getCurrentPosition(
         handleGeolocationSuccess,
         handleGeolocationError
       );
     } else {
-      setGeolocationStatus("Geolocation is not supported by this browser.");
+      setGeolocationStatus("Geolocation not supported.");
     }
   }, []);
 
   return (
-    <div className="container mx-auto">
-      <div className="max-w-md mx-auto mt-8 p-4 bg-transparent shadow">
-        <div className="flex items-center mb-4">
+    <div className="container mx-auto ">
+      <div className="max-w-md mx-auto mt-8 p-4 bg-transparent shadow bg-white bg-opacity-40 rounded-2xl">
+        <div className="flex items-center mb-2">
           <ul className="steps mb-6">
             <li className={`step ${step >= 1 ? "step-primary" : ""}`}>
               Basic Details
@@ -209,13 +197,20 @@ const MultiStepForm = () => {
                   >
                     Phone
                   </label>
-                  <input
+
+                  <PhoneInput
                     type="tel"
                     id="phone"
                     className="w-full p-2 border rounded-md"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Enter phone number"
                     required
+                    value={phone}
+                    onChange={(value) => setPhone(value ? value : "")}
+                    style={{
+                      height: "100%",
+                      backgroundColor: "white",
+                      outline: "transparent",
+                    }}
                   />
                 </div>
               </>
@@ -224,6 +219,7 @@ const MultiStepForm = () => {
             {step === 2 && (
               <>
                 <h2 className="text-lg font-bold mb-4">Step 2: Address</h2>
+
                 <div className="mb-4">
                   <label
                     htmlFor="addressLine1"
@@ -256,69 +252,74 @@ const MultiStepForm = () => {
                     required
                   />
                 </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="city"
-                    className="block mb-2 text-sm font-medium "
-                  >
-                    City
-                  </label>
-                  <input
-                    type="text"
-                    id="city"
-                    className="w-full p-2 border rounded-md"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    required
-                  />
+                <div className="flex justify-between">
+                  {" "}
+                  <div className="mb-4">
+                    <label
+                      htmlFor="city"
+                      className="block mb-2 text-sm font-medium "
+                    >
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      className="w-[96%] p-2 border rounded-md"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      htmlFor="state"
+                      className="block mb-2 text-sm font-medium "
+                    >
+                      State
+                    </label>
+                    <input
+                      type="text"
+                      id="state"
+                      className="w-full p-2 border rounded-md"
+                      value={state}
+                      onChange={(e) => setState(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="state"
-                    className="block mb-2 text-sm font-medium "
-                  >
-                    State
-                  </label>
-                  <input
-                    type="text"
-                    id="state"
-                    className="w-full p-2 border rounded-md"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="pincode"
-                    className="block mb-2 text-sm font-medium "
-                  >
-                    Pincode
-                  </label>
-                  <input
-                    type="text"
-                    id="pincode"
-                    className="w-full p-2 border rounded-md"
-                    value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="country"
-                    className="block mb-2 text-sm font-medium "
-                  >
-                    Country
-                  </label>
-                  <input
-                    type="text"
-                    id="country"
-                    className="w-full p-2 border rounded-md"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    required
-                  />
+                <div className="flex">
+                  <div className="mb-4">
+                    <label
+                      htmlFor="pincode"
+                      className="block mb-2 text-sm font-medium "
+                    >
+                      Pincode
+                    </label>
+                    <input
+                      type="number"
+                      id="pincode"
+                      className="w-[96%] p-2 border rounded-md"
+                      value={pincode}
+                      onChange={(e) => setPincode(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      htmlFor="country"
+                      className="block mb-2 text-sm font-medium "
+                    >
+                      Country
+                    </label>
+                    <input
+                      type="text"
+                      id="country"
+                      className="w-full p-2 border rounded-md"
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
               </>
             )}
@@ -420,7 +421,6 @@ const MultiStepForm = () => {
                   >
                     Geolocation Status
                   </label>
-
                   <p>{geolocationStatus}</p>
                   {locationAddress && (
                     <p className="text-sm text-gray-500 mt-2">
