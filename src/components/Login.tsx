@@ -21,7 +21,8 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    auth.login(email);
+    navigate("/");
     try {
       const response = await fetch(
         "https://x8ki-letl-twmt.n7.xano.io/api:XooRuQbs/auth/login",
