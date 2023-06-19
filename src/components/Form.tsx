@@ -356,7 +356,7 @@ const MultiStepForm = () => {
                     pauseOnHover
                     theme="colored"
                   />
-                  {/* Same as */}
+
                   <ToastContainer />
                 </div>
               </>
@@ -395,18 +395,19 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="geolocationStatus"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium"
                   >
                     Geolocation Status
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     id="geolocationStatus"
                     className="w-full p-2 border rounded-md"
                     value={geolocationStatus}
                     onChange={(e) => setGeolocationStatus(e.target.value)}
                     required
-                  />
+                  /> */}
+                  <p>{geolocationStatus}</p>
                   {locationAddress && (
                     <p className="text-sm text-gray-500 mt-2">
                       Location Address: {locationAddress}
