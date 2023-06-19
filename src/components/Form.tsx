@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(1);
@@ -13,7 +15,6 @@ const MultiStepForm = () => {
   const [country, setCountry] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [multiFiles, setMultiFiles] = useState<File[]>([]);
-  //   const [geolocationStatus, setGeolocationStatus] = useState("");
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,21 +71,21 @@ const MultiStepForm = () => {
   const [geolocationStatus, setGeolocationStatus] = useState("");
   const [locationAddress, setLocationAddress] = useState("");
 
-  const getLocationAddress = (
-    latitude: number | google.maps.LatLng | google.maps.LatLngLiteral,
-    longitude: number | boolean | null | undefined
-  ) => {
-    const geocoder = new window.google.maps.Geocoder();
-    const latLng = new window.google.maps.LatLng(latitude, longitude);
+  // const getLocationAddress = (
+  //   latitude: number | google.maps.LatLng | google.maps.LatLngLiteral,
+  //   longitude: number | boolean | null | undefined
+  // ) => {
+  //   const geocoder = new window.google.maps.Geocoder();
+  //   const latLng = new window.google.maps.LatLng(latitude, longitude);
 
-    geocoder.geocode({ location: latLng }, (results, status) => {
-      if (status === window.google.maps.GeocoderStatus.OK) {
-        if (results) {
-          setLocationAddress(results[0].formatted_address);
-        }
-      }
-    });
-  };
+  //   geocoder.geocode({ location: latLng }, (results, status) => {
+  //     if (status === window.google.maps.GeocoderStatus.OK) {
+  //       if (results) {
+  //         setLocationAddress(results[0].formatted_address);
+  //       }
+  //     }
+  //   });
+  // };
 
   // Function to handle geolocation success
   const handleGeolocationSuccess = async (position: {
@@ -95,7 +96,9 @@ const MultiStepForm = () => {
 
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyC7zvg4GcCd0EUescJBnU79y1-sN3qdfVI`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${
+          import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+        }`
       );
       const data = await response.json();
 
@@ -115,6 +118,8 @@ const MultiStepForm = () => {
   const handleGeolocationError = (error: { message: string }) => {
     setGeolocationStatus("Geolocation error: " + error.message);
   };
+
+  const handleMultipleFile = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
   useEffect(() => {
     // Check if the browser supports Geolocation
@@ -164,7 +169,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="name"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     Name
                   </label>
@@ -180,7 +185,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     Email
                   </label>
@@ -196,7 +201,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="phone"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     Phone
                   </label>
@@ -218,7 +223,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="addressLine1"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     Address Line 1
                   </label>
@@ -234,7 +239,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="addressLine2"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     Address Line 2
                   </label>
@@ -250,7 +255,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="city"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     City
                   </label>
@@ -266,7 +271,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="state"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     State
                   </label>
@@ -282,7 +287,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="pincode"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     Pincode
                   </label>
@@ -298,7 +303,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="country"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     Country
                   </label>
@@ -320,7 +325,7 @@ const MultiStepForm = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="file"
-                    className="block mb-2 text-sm font-medium text-gray-100"
+                    className="block mb-2 text-sm font-medium "
                   >
                     File (PNG or PDF)
                   </label>
@@ -334,11 +339,25 @@ const MultiStepForm = () => {
                         setFile(selectedFile);
                       } else {
                         setFile(null);
-                        alert("Please select a file of maximum size 1 MB.");
+                        toast("Please select a file of maximum size 1 MB.");
                       }
                     }}
                     required
                   />
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                  />
+                  {/* Same as */}
+                  <ToastContainer />
                 </div>
               </>
             )}
